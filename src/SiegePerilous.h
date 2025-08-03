@@ -47,7 +47,7 @@ namespace SiegePerilous {
 
 			b2BodyDef bodyDef = b2DefaultBodyDef( );
 			bodyDef.type = b2_dynamicBody;
-			bodyDef.position = ( b2Vec2 ){ 0.0f, 4.0f };
+			bodyDef.position = b2Vec2({ 0.0f, 4.0f });
 			physicsState.bodyId = b2CreateBody( physicsState.worldId, &bodyDef );
 
 			b2ShapeDef shapeDef = b2DefaultShapeDef( );
@@ -56,7 +56,7 @@ namespace SiegePerilous {
 
 			m_isInitialized = true;
 
-			currentTime = SDL_GetSeconds( );
+			currentTime =  SDL_GetTicks() / 1000.0;
 			accumulator = 0.0;
 
 			return true;
@@ -70,7 +70,7 @@ namespace SiegePerilous {
 		}
 
 		void Update( ) {
-			double newTime = SDL_GetSeconds();
+			double newTime = SDL_GetTicks() / 1000.0;
 			double frameTime = newTime - currentTime;
 			currentTime = newTime;
 			accumulator += frameTime;
