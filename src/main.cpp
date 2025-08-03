@@ -97,6 +97,7 @@ SDL_AppResult SDL_AppInit( void **appstate, int argc, char **argv ) {
 	}
 
 	worldState.Initialise();
+	worldState.SetRenderer(renderer);
 	worldState.Start();
 
 	return SDL_APP_CONTINUE;
@@ -112,6 +113,9 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 	Uint8 b = (ticks / 20 + 170) % 255;
 	SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 	SDL_RenderClear( renderer );
+
+	worldState.Draw();
+
 	SDL_RenderPresent( renderer );
 
 	while ( SDL_GetAudioStreamAvailable( worldState.audioState.stream_in ) > 0 ) {

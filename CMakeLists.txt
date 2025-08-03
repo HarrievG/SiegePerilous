@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.29.5)
+cmake_minimum_required(VERSION 3.28.3)
 project(SiegePerilous)
 
 include(FetchContent)
@@ -49,10 +49,12 @@ message(STATUS "box2d_BINARY_DIR: ${box2d_BINARY_DIR}")
 
 set (headers
 src/SiegePerilous.h
+src/b2_sdl_draw.h
 )
 
 set (sources
 src/main.cpp
+src/b2_sdl_draw.cpp
 )
 
 add_executable(${PROJECT_NAME} ${sources} ${headers})
