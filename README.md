@@ -1,6 +1,6 @@
 # Siege Perilous
 
-This is a C++ project that uses SDL3 and Box2D. It currently creates a window and allows for audio recording and playback.
+This is a C++ project that uses SDL3 and Box2D.
 
 ## Dependencies
 
