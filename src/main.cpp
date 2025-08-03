@@ -1,71 +1,34 @@
 #define SDL_MAIN_USE_CALLBACKS
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-#include <SDL3/SDL_test.h>
 #include "SiegePerilous.h"
 
+static SiegePerilous::WorldState worldState;
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
-static SDL_AudioStream *stream_in = NULL;
-static SDL_AudioStream *stream_out = NULL;
-static SDLTest_CommonState *state = NULL;
 
 static unsigned int WINDOW_SIZE_X = 1920;
 static unsigned int WINDOW_SIZE_Y = 1080; 
 
 SDL_AppResult SDL_AppInit( void **appstate, int argc, char **argv ) {
+	SDL_SetHint( SDL_HINT_MAIN_CALLBACK_RATE, "60" );
+
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
+		return SDL_APP_FAILURE;
+	}
 
 	SDL_AudioDeviceID *devices;
 	SDL_AudioSpec outspec;
 	SDL_AudioSpec inspec;
 	SDL_AudioDeviceID device;
 	SDL_AudioDeviceID want_device = SDL_AUDIO_DEVICE_DEFAULT_RECORDING;
-	const char *devname = "Microphone (C922 Pro Stream Webcam)";
+	const char *devname = NULL;
 	int i;
 
-	/* this doesn't have to run very much, so give up tons of CPU time between iterations. */
-	SDL_SetHint( SDL_HINT_MAIN_CALLBACK_RATE, "15" );
-
-	/* Initialize test framework */
-	state = SDLTest_CommonCreateState( argv, 0 );
-	if ( !state ) {
-		return SDL_APP_SUCCESS;
+	if (argc > 1) {
+		devname = argv[1];
 	}
-
-	/* Parse commandline */
-	for ( i = 1; i < argc;) {
-		int consumed;
-
-		consumed = SDLTest_CommonArg( state, i );
-		if ( !consumed ) {
-			if ( !devname ) {
-				devname = argv[i];
-				consumed = 1;
-			}
-		}
-		if ( consumed <= 0 ) {
-			static const char *options[] = { "[device_name]", NULL };
-			SDLTest_CommonLogUsage( state, argv[0], options );
-			return SDL_APP_FAILURE;
-		}
-
-		i += consumed;
-	}
-
-	/* Load the SDL library */
-	if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
-		return SDL_APP_SUCCESS;
-	}
-
-	if (!SDL_CreateWindowAndRenderer("TEST", WINDOW_SIZE_X, WINDOW_SIZE_Y, 0, &window, &renderer)) {
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create SDL window and renderer: %s", SDL_GetError());
-		return SDL_APP_SUCCESS;
-	}
-
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	SDL_RenderClear(renderer);
-	SDL_RenderPresent(renderer);
 
 	SDL_Log("Using audio driver: %s", SDL_GetCurrentAudioDriver());
 
@@ -83,12 +46,6 @@ SDL_AppResult SDL_AppInit( void **appstate, int argc, char **argv ) {
 		devname = NULL;
 	}
 
-	/* DirectSound can fail in some instances if you open the same hardware
-	for both recording and output and didn't open the output end first,
-	according to the docs, so if you're doing something like this, always
-	open your recording devices second in case you land in those bizarre
-	circumstances. */
-
 	SDL_Log("Opening default playback device...");
 	device = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL);
 	if (!device) {
@@ -98,12 +55,12 @@ SDL_AppResult SDL_AppInit( void **appstate, int argc, char **argv ) {
 	}
 	SDL_PauseAudioDevice(device);
 	SDL_GetAudioDeviceFormat(device, &outspec, NULL);
-	stream_out = SDL_CreateAudioStream(&outspec, &outspec);
-	if (!stream_out) {
+	worldState.audioState.stream_out = SDL_CreateAudioStream(&outspec, &outspec);
+	if (!worldState.audioState.stream_out) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create an audio stream for playback: %s!", SDL_GetError());
 		SDL_free(devices);
 		return SDL_APP_FAILURE;
-	} else if (!SDL_BindAudioStream(device, stream_out)) {
+	} else if (!SDL_BindAudioStream(device, worldState.audioState.stream_out)) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't bind an audio stream for playback: %s!", SDL_GetError());
 		SDL_free(devices);
 		return SDL_APP_FAILURE;
@@ -123,43 +80,54 @@ SDL_AppResult SDL_AppInit( void **appstate, int argc, char **argv ) {
 	SDL_free(devices);
 	SDL_PauseAudioDevice(device);
 	SDL_GetAudioDeviceFormat(device, &inspec, NULL);
-	stream_in = SDL_CreateAudioStream(&inspec, &inspec);
-	if (!stream_in) {
+	worldState.audioState.stream_in = SDL_CreateAudioStream(&inspec, &inspec);
+	if (!worldState.audioState.stream_in) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create an audio stream for recording: %s!", SDL_GetError());
 		return SDL_APP_FAILURE;
-	} else if (!SDL_BindAudioStream(device, stream_in)) {
+	} else if (!SDL_BindAudioStream(device, worldState.audioState.stream_in)) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't bind an audio stream for recording: %s!", SDL_GetError());
 		return SDL_APP_FAILURE;
 	}
 
-	SDL_SetAudioStreamFormat(stream_in, NULL, &outspec);  /* make sure we output at the playback format. */
+	SDL_SetAudioStreamFormat(worldState.audioState.stream_in, NULL, &outspec);
 
-	SDL_Log("Ready! Hold down mouse or finger to record!");
+	if (SDL_CreateWindowAndRenderer("Siege Perilous", WINDOW_SIZE_X, WINDOW_SIZE_Y, 0, &window, &renderer) < 0) {
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create SDL window and renderer: %s", SDL_GetError());
+		return SDL_APP_FAILURE;
+	}
+
+	worldState.Initialise();
+	worldState.Start();
 
 	return SDL_APP_CONTINUE;
 }
 
 SDL_AppResult SDL_AppIterate(void *appstate)
 {
-	if ( !SDL_AudioStreamDevicePaused( stream_in ) ) {
-		SDL_SetRenderDrawColor( renderer, 0, 255, 0, 255 );
-	} else {
-		SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255 );
-	}
+	worldState.Update();
+
+	Uint32 ticks = SDL_GetTicks();
+	Uint8 r = (ticks / 20) % 255;
+	Uint8 g = (ticks / 20 + 85) % 255;
+	Uint8 b = (ticks / 20 + 170) % 255;
+	SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 	SDL_RenderClear( renderer );
 	SDL_RenderPresent( renderer );
 
-	/* Feed any new data we recorded to the output stream. It'll play when we unpause the device. */
-	while ( SDL_GetAudioStreamAvailable( stream_in ) > 0 ) {
+	while ( SDL_GetAudioStreamAvailable( worldState.audioState.stream_in ) > 0 ) {
 		Uint8 buf[1024];
-		const int br = SDL_GetAudioStreamData( stream_in, buf, sizeof( buf ) );
+		const int br = SDL_GetAudioStreamData( worldState.audioState.stream_in, buf, sizeof( buf ) );
 		if ( br < 0 ) {
 			SDL_LogError( SDL_LOG_CATEGORY_APPLICATION, "Failed to read from input audio stream: %s", SDL_GetError( ) );
 			return SDL_APP_FAILURE;
-		} else if ( !SDL_PutAudioStreamData( stream_out, buf, br ) ) {
+		} else if ( !SDL_PutAudioStreamData( worldState.audioState.stream_out, buf, br ) ) {
 			SDL_LogError( SDL_LOG_CATEGORY_APPLICATION, "Failed to write to output audio stream: %s", SDL_GetError( ) );
 			return SDL_APP_FAILURE;
 		}
+	}
+
+	if (!worldState.IsRunning()) {
+		return SDL_APP_SUCCESS;
 	}
 
 	return SDL_APP_CONTINUE;
@@ -168,40 +136,37 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 {
 	if ( event->type == SDL_EVENT_QUIT ) {
-		return SDL_APP_SUCCESS;
+		worldState.Stop();
 	} else if ( event->type == SDL_EVENT_KEY_DOWN ) {
 		if ( event->key.key == SDLK_ESCAPE ) {
-			return SDL_APP_SUCCESS;
+			worldState.Stop();
 		}
 	} 
 	else if ( event->type == SDL_EVENT_MOUSE_BUTTON_DOWN ) {
 		if ( event->button.button == 1 ) {
-			SDL_PauseAudioStreamDevice( stream_out );
-			SDL_FlushAudioStream( stream_out );  /* so no samples are held back for resampling purposes. */
-			SDL_ResumeAudioStreamDevice( stream_in );
+			SDL_PauseAudioStreamDevice( worldState.audioState.stream_out );
+			SDL_FlushAudioStream( worldState.audioState.stream_out );
+			SDL_ResumeAudioStreamDevice( worldState.audioState.stream_in );
 		}
 	} else if ( event->type == SDL_EVENT_MOUSE_BUTTON_UP ) {
 		if ( event->button.button == 1 ) {
-			SDL_PauseAudioStreamDevice( stream_in );
-			SDL_FlushAudioStream( stream_in );  /* so no samples are held back for resampling purposes. */
-			SDL_ResumeAudioStreamDevice( stream_out );
+			SDL_PauseAudioStreamDevice( worldState.audioState.stream_in );
+			SDL_FlushAudioStream( worldState.audioState.stream_in );
+			SDL_ResumeAudioStreamDevice( worldState.audioState.stream_out );
 		}
 	}
 	return SDL_APP_CONTINUE;
 }
 
 void SDL_AppQuit( void *appstate, SDL_AppResult result ) {
-
-	SDL_Log( "Shutting down." );
-	const SDL_AudioDeviceID devid_in = SDL_GetAudioStreamDevice( stream_in );
-	const SDL_AudioDeviceID devid_out = SDL_GetAudioStreamDevice( stream_out );
-	SDL_CloseAudioDevice( devid_in );  /* !!! FIXME: use SDL_OpenAudioDeviceStream instead so we can dump this. */
+	const SDL_AudioDeviceID devid_in = SDL_GetAudioStreamDevice( worldState.audioState.stream_in );
+	const SDL_AudioDeviceID devid_out = SDL_GetAudioStreamDevice( worldState.audioState.stream_out );
+	SDL_CloseAudioDevice( devid_in );
 	SDL_CloseAudioDevice( devid_out );
-	SDL_DestroyAudioStream( stream_in );
-	SDL_DestroyAudioStream( stream_out );
+	SDL_DestroyAudioStream( worldState.audioState.stream_in );
+	SDL_DestroyAudioStream( worldState.audioState.stream_out );
 	SDL_DestroyRenderer( renderer );
 	SDL_DestroyWindow( window );
+	worldState.Shutdown();
 	SDL_Quit( );
-	SDLTest_CommonDestroyState( state );
-	
 }
