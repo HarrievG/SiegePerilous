@@ -10,12 +10,6 @@
 
 namespace SiegePerilous {
 
-	struct PhysicsState {
-		b2WorldId worldId;
-		b2BodyId groundId;
-		b2BodyId bodyId;
-	};
-
 	struct AudioState {
 		SDL_AudioStream *stream_in;
 		SDL_AudioStream *stream_out;
@@ -23,19 +17,27 @@ namespace SiegePerilous {
 
 	class WorldState {
 	public:
-		WorldState( ) : m_isInitialized( false ), m_isRunning( false ), m_debugDraw(nullptr) {
+		WorldState( SDL_Renderer *renderer ) : m_isInitialized( false ), m_isRunning( false ), m_debugDraw( nullptr ), m_camera(renderer) {
+			SetRenderer( renderer );
+			physicsState.worldId = B2_NULL_ID;
+			physicsState.groundId = B2_NULL_ID;
+			physicsState.bodyId = B2_NULL_ID;
+			audioState.stream_in = nullptr;
+			audioState.stream_out = nullptr;
+			currentTime = 0.0;
+			accumulator = 0.0;
 		
 		};
 		~WorldState( ) { };
 
 		void SetRenderer(SDL_Renderer* renderer) {
-			m_debugDraw = new b2SDLDraw(renderer);
+			m_debugDraw = new b2SDLDraw(renderer,&m_camera);
 			uint32_t flags = 0;
-			flags |= b2_drawShapes;
-			flags |= b2_drawJoints;
-			flags |= b2_drawAABBs;
-			flags |= b2_drawMass;
-			flags |= b2_drawTransforms;
+			//flags |= b2_drawShapes;
+			//flags |= b2_drawJoints;
+			//flags |= b2_drawAABBs;
+			//flags |= b2_drawMass;
+			//flags |= b2_drawTransforms;
 			m_debugDraw->SetFlags(flags);
 		}
 
@@ -45,23 +47,20 @@ namespace SiegePerilous {
 			}
 
 			b2WorldDef worldDef = b2DefaultWorldDef( );
-			worldDef.gravity = b2Vec2( { 0.0f, -9.8723f } );
+			worldDef.gravity = b2Vec2( { 0.0f, -10.f } );
 			physicsState.worldId = b2CreateWorld( &worldDef );
 
 			b2BodyDef groundBodyDef = b2DefaultBodyDef( );
-			groundBodyDef.position = b2Vec2( { 0.0f, -10.0f } );
-
+			groundBodyDef.position = b2Vec2( { 0.0f, 0.0f } );
 			physicsState.groundId = b2CreateBody( physicsState.worldId, &groundBodyDef );
-			b2Polygon groundBox = b2MakeBox( 50.0f, 10.0f );
-
+			b2Polygon groundBox = b2MakeOffsetBox( 25.0f, 1.0f, {0.0f,0.0f}, b2MakeRot( degToRad(10)  ));
 			b2ShapeDef groundShapeDef = b2DefaultShapeDef( );
 			b2CreatePolygonShape( physicsState.groundId, &groundShapeDef, &groundBox );
 
 			b2BodyDef bodyDef = b2DefaultBodyDef( );
 			bodyDef.type = b2_dynamicBody;
-			bodyDef.position = b2Vec2({ 0.0f, 4.0f });
+			bodyDef.position = b2Vec2({ 0.0f, 10.0f });
 			physicsState.bodyId = b2CreateBody( physicsState.worldId, &bodyDef );
-
 			b2Circle circle = { {0.0f, 0.0f}, 0.5f };
 			b2ShapeDef shapeDef = b2DefaultShapeDef( );
 			shapeDef.density = 1.0f;
@@ -92,7 +91,7 @@ namespace SiegePerilous {
 			currentTime = newTime;
 			accumulator += frameTime;
 
-			const double timeStep = 1.0 / 60.0;
+			const float timeStep = 1.0 / 60.0;
 			while (accumulator >= timeStep)
 			{
 				b2World_Step(physicsState.worldId, timeStep, 4);
@@ -102,7 +101,7 @@ namespace SiegePerilous {
 
 		void Draw() {
 			if (m_debugDraw) {
-				b2World_Draw(physicsState.worldId, m_debugDraw);
+				b2World_Draw(physicsState.worldId, m_debugDraw->getDebugDrawPtr());
 			}
 		}
 
@@ -113,6 +112,7 @@ namespace SiegePerilous {
 		PhysicsState physicsState;
 		AudioState audioState;
 
+		Camera &GetCamera( ) { return m_camera; }
 	private:
 		bool m_isInitialized;
 		bool m_isRunning;
@@ -120,5 +120,7 @@ namespace SiegePerilous {
 
 		double currentTime;
 		double accumulator;
+
+		Camera m_camera;
 	};
 }

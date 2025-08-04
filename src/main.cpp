@@ -3,9 +3,10 @@
 #include <SDL3/SDL_main.h>
 #include "SiegePerilous.h"
 
-static SiegePerilous::WorldState worldState;
+
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
+static SiegePerilous::WorldState worldState(renderer);
 
 static unsigned int WINDOW_SIZE_X = 1920;
 static unsigned int WINDOW_SIZE_Y = 1080; 
@@ -13,7 +14,7 @@ static unsigned int WINDOW_SIZE_Y = 1080;
 SDL_AppResult SDL_AppInit( void **appstate, int argc, char **argv ) {
 	SDL_SetHint( SDL_HINT_MAIN_CALLBACK_RATE, "60" );
 
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+	if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
 		return SDL_APP_FAILURE;
 	}
@@ -91,13 +92,13 @@ SDL_AppResult SDL_AppInit( void **appstate, int argc, char **argv ) {
 
 	SDL_SetAudioStreamFormat(worldState.audioState.stream_in, NULL, &outspec);
 
-	if (SDL_CreateWindowAndRenderer("Siege Perilous", WINDOW_SIZE_X, WINDOW_SIZE_Y, 0, &window, &renderer) < 0) {
+	if (!SDL_CreateWindowAndRenderer("Siege Perilous", WINDOW_SIZE_X, WINDOW_SIZE_Y,SDL_WINDOW_RESIZABLE, &window, &renderer)) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create SDL window and renderer: %s", SDL_GetError());
 		return SDL_APP_FAILURE;
 	}
 
-	worldState.Initialise();
-	worldState.SetRenderer(renderer);
+	worldState.SetRenderer( renderer );
+	worldState.Initialise( );
 	worldState.Start();
 
 	return SDL_APP_CONTINUE;
@@ -107,11 +108,11 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 {
 	worldState.Update();
 
-	Uint32 ticks = SDL_GetTicks();
-	Uint8 r = (ticks / 20) % 255;
-	Uint8 g = (ticks / 20 + 85) % 255;
-	Uint8 b = (ticks / 20 + 170) % 255;
-	SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+	Uint64 ticks = SDL_GetTicks();
+	//Uint8 r = (ticks / 20) % 255;
+	//Uint8 g = (ticks / 20 + 85) % 255;
+	//Uint8 b = (ticks / 20 + 170) % 255;
+	SDL_SetRenderDrawColor(renderer, 128, 0, 128, 255);
 	SDL_RenderClear( renderer );
 
 	worldState.Draw();
@@ -139,6 +140,10 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 {
+	if ( event->type == SDL_EVENT_WINDOW_RESIZED)
+	{
+		worldState.GetCamera().UpdateRenderer( renderer );
+	}
 	if ( event->type == SDL_EVENT_QUIT ) {
 		worldState.Stop();
 	} else if ( event->type == SDL_EVENT_KEY_DOWN ) {
