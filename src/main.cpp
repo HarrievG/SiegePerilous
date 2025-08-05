@@ -2,7 +2,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include "SiegePerilous.h"
-
+#include "tiled_data.h"
+#include "World.h"
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;

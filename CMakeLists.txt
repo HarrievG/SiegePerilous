@@ -48,16 +48,18 @@ message(STATUS "box2d_BINARY_DIR: ${box2d_BINARY_DIR}")
 
 
 set (headers
-src/SiegePerilous.h
-src/b2_sdl_draw.h
-)
+"src/SiegePerilous.h"
+"src/b2_sdl_draw.h"
+"src/World.h"
+"src/tiled_data.h")
 
 set (sources
-src/main.cpp
-src/b2_sdl_draw.cpp
-)
+"src/main.cpp"
+"src/b2_sdl_draw.cpp"
+"src/tiled_data_loader.cpp"
+"src/World.cpp")
 
-add_executable(${PROJECT_NAME} ${sources} ${headers})
+add_executable(${PROJECT_NAME} ${sources} ${headers} "src/tiled_data.h")
 SDL_AddCommonCompilerFlags(${PROJECT_NAME})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 23)

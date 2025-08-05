@@ -1,0 +1,22 @@
+{ "columns":40,
+ "grid":
+    {
+     "height":10,
+     "orientation":"orthogonal",
+     "width":10
+    },
+ "image":"..\/vid_frames\/env_1\/frame_0069.png",
+ "imageheight":720,
+ "imagewidth":1280,
+ "margin":0,
+ "name":"frame_0069",
+ "objectalignment":"topleft",
+ "spacing":0,
+ "tilecount":9216,
+ "tiledversion":"1.11.2",
+ "tileheight":32,
+ "tilerendersize":"grid",
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}
