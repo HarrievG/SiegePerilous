@@ -60,7 +60,7 @@ public:
 	void SetCenter( const b2Vec2 &center ) { m_center = center; }
 	float GetZoom( ) const { return m_zoom; }
 	const b2Vec2 &GetCenter( ) const { return m_center; }
-
+	SDL_Renderer *GetRenderer( ) const { return m_renderer; }
 private:
 	SDL_Renderer *m_renderer;
 	int m_width;

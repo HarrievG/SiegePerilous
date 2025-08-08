@@ -6,7 +6,11 @@
 #include "box2d/math_functions.h"
 #include <SDL3/SDL.h>
 #include "b2_sdl_draw.h"
-
+#include "tiled_data.h"
+#include <optional>
+#include <map>
+#include "QuadTree.hpp"
+#include "FileSystem.h"
 
 namespace SiegePerilous {
 
@@ -17,7 +21,7 @@ namespace SiegePerilous {
 
 	class WorldState {
 	public:
-		WorldState( SDL_Renderer *renderer );;
+		WorldState( );;
 		~WorldState( );;
 
 		void SetRenderer( SDL_Renderer *renderer );
@@ -47,5 +51,12 @@ namespace SiegePerilous {
 		double accumulator;
 
 		Camera m_camera;
+
+		std::optional<Tiled::Map> m_map;
+		std::map<int, SDL_Texture *> m_tileset_textures;
+		
+		QuadTree::QuadTree<int> *m_quadTree;
+		FileSystem *m_fileSystem{};
+
 	};
 }

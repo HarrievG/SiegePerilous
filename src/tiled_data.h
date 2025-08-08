@@ -240,9 +240,38 @@ namespace Tiled {
 		int x{};
 		int y{};
 
+		// This field is not part of the JSON, it will be populated after loading
+		std::vector<uint32_t> decoded_data{};
+
+
 		struct glaze {
 			using T = Layer;
-			static constexpr auto value = glz::object( "chunks", &T::chunks, "class", &T::class_property, "compression", &T::compression, "data", &T::data, "draworder", &T::draworder, "encoding", &T::encoding, "height", &T::height, "id", &T::id, "image", &T::image, "layers", &T::layers, "locked", &T::locked, "name", &T::name, "objects", &T::objects, "offsetx", &T::offsetx, "offsety", &T::offsety, "opacity", &T::opacity, "parallaxx", &T::parallaxx, "parallaxy", &T::parallaxy, "properties", &T::properties, "repeatx", &T::repeatx, "repeaty", &T::repeaty, "startx", &T::startx, "starty", &T::starty, "tintcolor", &T::tintcolor, "transparentcolor", &T::transparentcolor, "type", &T::type, "visible", &T::visible, "width", &T::width, "x", &T::x, "y", &T::y );
+			static constexpr auto value = glz::object( 
+					"chunks", &T::chunks, 
+					"class", &T::class_property,
+					"compression", &T::compression,
+					"data", &T::data,
+					"draworder", &T::draworder,
+					"encoding", &T::encoding,
+					"height", &T::height,
+					"id", &T::id,
+					"image", &T::image,
+					"layers", &T::layers,
+					"locked", &T::locked,
+					"name", &T::name,
+					"objects", &T::objects,
+					"offsetx", &T::offsetx, "offsety", &T::offsety,
+					"opacity", &T::opacity,
+					"parallaxx", &T::parallaxx, "parallaxy", &T::parallaxy,
+					"properties", &T::properties,
+					"repeatx", &T::repeatx,	"repeaty", &T::repeaty,
+					"startx", &T::startx,"starty", &T::starty,
+					"tintcolor", &T::tintcolor,
+					"transparentcolor", &T::transparentcolor,
+					"type", &T::type,
+					"visible", &T::visible,
+					"width", &T::width,
+					"x", &T::x, "y", &T::y );
 		};
 	};
 
@@ -266,7 +295,7 @@ namespace Tiled {
 		struct glaze {
 			using T = EditorSettings;
 			static constexpr auto value = glz::object(
-				" export", &T::export_settings
+				"export", &T::export_settings
 			);
 		};
 	};
@@ -344,6 +373,26 @@ namespace Tiled {
 		};
 	};
 
+
+	// Holds the static definition of an animation, loaded from the Tiled data.
+	struct AnimationDefinition {
+		// The GID of the tile that defines this animation (the first frame).
+		uint32_t base_gid;
+		// A vector of the frames that make up this animation.
+		std::vector<Tiled::Frame> frames;
+	};
+
+	// Holds the current state of a running animation.
+	struct ActiveAnimationState {
+		// Pointer to the static animation data.
+		const AnimationDefinition *definition;
+		// The current frame index in the animation sequence.
+		int current_frame_index = 0;
+		// Accumulates time to determine when to switch frames.
+		double time_accumulator_ms = 0.0;
+	};
+
+
 	struct Map {
 		std::optional<std::string> backgroundcolor{};
 		std::optional<std::string> class_property{};
@@ -368,6 +417,13 @@ namespace Tiled {
 		std::string type = "map";
 		std::string version{};
 		int width{};
+		//////////////////////////////////////////////////////////////////////////
+		// runtime extras
+		// Maps a base GID to its animation definition.
+		std::map<uint32_t, AnimationDefinition> m_animation_definitions;
+		// Maps a base GID to its currently active state.
+		std::map<uint32_t, ActiveAnimationState> m_active_animations;
+		//////////////////////////////////////////////////////////////////////////
 
 		struct glaze {
 			using T = Map;
@@ -398,10 +454,9 @@ namespace Tiled {
 			);
 		};
 	};
-
-
-	//forward declare functions
-	std::string get_base_path( const std::string &file_path );
+	
+	// Loads a Tiled map and recursively resolves its external tilesets.
 	std::optional<Tiled::Map> load_map_with_deps( const std::string &map_path );
+
 
 } // namespace Tiled

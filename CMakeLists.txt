@@ -1,22 +1,11 @@
 cmake_minimum_required(VERSION 3.28.3)
 project(SiegePerilous)
 
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+include(libraries)
+
 include(FetchContent)
-
-# --- Fetch SDL 3 ---
-FetchContent_Declare(
-  SDL3
-  GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-  GIT_TAG main
-  GIT_SHALLOW TRUE
-)
-set(SDL_TESTS OFF)
-set(SDL_SHARED OFF)
-set(SDL_STATIC ON)
-FetchContent_MakeAvailable(SDL3)
-
-message(STATUS "SDL3_SOURCE_DIR: ${SDL3_SOURCE_DIR}")
-message(STATUS "SDL3_BINARY_DIR: ${SDL3_BINARY_DIR}")
 
 # --- Fetch Glaze ---
 FetchContent_Declare(
@@ -47,6 +36,19 @@ message(STATUS "box2d_SOURCE_DIR: ${box2d_SOURCE_DIR}")
 message(STATUS "box2d_BINARY_DIR: ${box2d_BINARY_DIR}")
 
 
+# --- Fetch Zlib ---
+FetchContent_Declare(
+  zlib
+  GIT_REPOSITORY https://github.com/madler/zlib
+  GIT_TAG master
+  GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(zlib)
+
+message(STATUS "zlib_SOURCE_DIR: ${zlib_SOURCE_DIR}")
+message(STATUS "zlib_BINARY_DIR: ${zlib_BINARY_DIR}")
+
+
 set (headers
 "src/SiegePerilous.h"
 "src/b2_sdl_draw.h"
@@ -57,13 +59,21 @@ set (sources
 "src/main.cpp"
 "src/b2_sdl_draw.cpp"
 "src/tiled_data_loader.cpp"
-"src/World.cpp")
+"src/World.cpp"
+"src/FileSystem.cpp"
+)
 
 add_executable(${PROJECT_NAME} ${sources} ${headers} "src/tiled_data.h")
 SDL_AddCommonCompilerFlags(${PROJECT_NAME})
-
+ 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 23)
-target_link_libraries(${PROJECT_NAME} PRIVATE PRIVATE SDL3::SDL3-static glaze::glaze box2d::box2d)
+target_link_libraries(${PROJECT_NAME} 
+	PRIVATE SDL3::SDL3-static 
+	PRIVATE SDL3_image::SDL3_image 
+	PRIVATE glaze::glaze 
+	PRIVATE box2d::box2d
+	PRIVATE zlib
+)
 target_include_directories(${PROJECT_NAME} PRIVATE
   ${glaze_SOURCE_DIR}/include/glaze
   ${SDL3_BINARY_DIR}/include-config-$<LOWER_CASE:$<CONFIG>>

@@ -1,0 +1,104 @@
+{
+  "compressionlevel": -1,
+  "height": 23,
+  "infinite": false,
+  "layers": [
+    {
+      "compression": "zlib",
+      "data": "eJztzgENAAAIA6BHsX9KY3xTSEACAAB8N+0AJyxXYAAh",
+      "encoding": "base64",
+      "height": 23,
+      "id": 6,
+      "name": "Tile Layer 1",
+      "opacity": 1,
+      "type": "tilelayer",
+      "visible": true,
+      "width": 40,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "compression": "zlib",
+      "data": "eJzt1MeSlGUYBeAWJGzVIc0MQUDAnFgp4VNAuABXSgbFC2CFhENGQDCtwET2Alhh+gARLoAVOYMoYGAlyQf/K2itcuVUPVVTPf2ec6r/qW61/v/5Nz/HHmq1jnOCk5ziNGc4yznOc4GLXOIyV/iJq/zML1zjOjf4ld/4nT+42dzEbWREVmRGdnREV3RGd2yILbEpix5utd5lMUtYyjLCclawklWsZg1rWcd7rGcDG3mfTWzmAz7kIz7mk+YmbiMjsiIzsqMjuqIzumNDbIlN6Xyk1eqim8EMYSjDeJThjGAkjzGK0YzhcZ7gSZ7iaZ7hWZ7jeV7gRcY2N3EbGZEVmZEdHdEVndEdG2JLbMo+d1/zDd/yHd9T2c8BDvIDh/iRwxx5pL3/o6PNTdxGRmRFZmRHR3RFZ3THhtgSm/JGR6v1JtOZwUxmMZs5zGUe83mLt1nAOx3t7VvY3MRtZERWZEZ2dERXdEZ3bIgtsSl/urvFbe5wl3v3u/u1Wg/Qg548SC9604e+/drb19HcxG1kRFZkRnZ0RFd0RndsiC2xKVvcbeVTPuNzvuBLtrGdHexkF7vZw1dt7tvb3MRtZERWZEZ2dERXdEZ3bIgtsSkv9W+1XmYc45nARAqv8CqTmMwUXmMq0/q3t+/15iZuIyOyIjOyoyO6ojO6Y0NsiU055u44JzjJKU5zhrOc4zwXuMglLnOlzX03m5u4jYzIiszIjo7ois7ojg2xJTZl0QDffyxmCUtZRljOClayitWsYS3rBrS375PmJm4jI7IiM7KjI7qiM7pjQ2yJTekc6PuPbgYzhKEM41GGM4KRPMYoRjNmYHv7xjY3cRsZkRWZkR0d0RWd0R0bYktsyj53X/MN3/Id31PZzwEO8gOH+JHDHGlz39HmJm4jI7IiM7KjI7qiM7pjQ2yJTXljkO8/pjODmcxiNnOYyzzm8xZvs4B3BrW3b2FzE7eREVmRGdnREV3RGd2xIbbEpvzp7ha3ucNd7t3v7vT9Rw968iC96E0f+na2t6+juYnbyIisyIzs6Iiu6Izu2BBbYlO2uNvKp3zG53zBl2xjOzvYyS52s4ev2ty3t7mJ28iIrMiM7OiIruiM7tgQW2JTXury/cc4xjOBiRRe4VUmMZkpvMZUpnW1t+/15iZuIyOyIjOyoyO6ojO6Y0NsiU055u44JzjJKU5zhrOc4zwXuMglLnPlH+xzE7eREVmRGdnREV3RGd2xIbbEpizq9v3HYpawlGWE5axgJatYzRrWsq67vX03u/6+idvIiKzIjOzoiK7ojO7YEFti0/19xb7i9+K14m/Fe4r3FjfFbZFRZBWZRXbRUXSV91jPBjbyPpvY3PxevVb9rXpP9d7qprqtMqqsKrPKrjqqrqqz6q42VFuqTdXzLZ5v8VkWn2nx2RafcfFZF5958dkXz6B4FsUzKZ5N8YyKZ1V+4io/8wvXuM6N5vfqtepv1Xuq91Y31W2VUWVVmVV21VF1VZ1Vd7Wh2lJtqu09pf/+5y8PTSnp",
+      "encoding": "base64",
+      "height": 23,
+      "id": 7,
+      "name": "Tile Layer 2",
+      "offsetx": -32,
+      "offsety": -2,
+      "opacity": 1,
+      "type": "tilelayer",
+      "visible": true,
+      "width": 40,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "compression": "zlib",
+      "data": "eJzt1FeSVdcBheEL3Q1ITgNQzpoDJkdnv2Ny9BhkSb+y5kDOSLZkvwvlOAeaHJ39TgP+Th1P4JZe3VVf3VP37r3Weug6k8n//77P35aZyeR3bGUb29nBTnaxmz3sZR8H+P3MJJ/tZ9pnGclKZrLTka50pjsbsiWbsq27+ha4x30eMJmdTBaxmBlmmWMJy3hodpLPljLts4xkJTPZ6UhXOtOdDdnSwritg/oOcZgjHOUYxznBSU5xmjOc4z1ZPjvLtM8ykpXMZKcjXelMdzZkSzYN21o+N5n8lBWsZBWrWcNa1rGeDWxk09ykzf8zzf/RcH64KyNZyUx2OtKVznRnQ7Zk07CtCzrnucglLnOFq1zjOje4yS1uc2c01b7hvLvJSFYyk52OdKUz3dmQLc2P23ppyWTyB17mFV4lXuN13uBN3uJt3uHd0VT7hvPuJiNZyUx2OtKVznRnQ7Zk07CtR5ZOJo/yGI/zBE/yFE/zDM/yHM/zAi+Opto3nHc3GclKZrLTka50pjsbsiWbhm19pOs8H/MJn/IZn/MFX/IVX/MN3/LdaKp9w3l3k5GsZCY7HelKZ7qzIVs6P25ryzLvP7ayje3sYCe72M0e9rKP/RwYTbVvOO9uMpKVzGSnI13pTHc2ZEs2Ddu6q2uBe9znAZOHvP9YzAyzzLGEpSwbTbVvOO9uMpKVzGSno0VDFrqzIVtaGLd1UNchDnOEoxzjOCc4ySlOc4aznBtNtW84724ykpXMZKcjXelMdzZkSzYN21r+sPcfK1jJKlazhrWsYz0b2MgmNo+m2jecdzcZyUpmstORrnSmOxuyJZuGbV3QNc9FLnGZK1zlGte5wU1ucZs7o6n2DefdTUaykpnsdKQrnenOhmxpftzWSz/w/uNlXuFV4jVe5w3e5C3e5h3eHU21bzjvbjKSlcxkpyNd6Ux3NmRLNg3beuSH3n88xuM8wZM8xdM8w7M8x/O8wIujqfYN591NRrKSmex0pCud6c6GbMmmYVsf6TrPx3zCp3zG53zBl3zF13zDt3w3mmrfcN7dZCQrmclOR7rSme5syJbOj9va8iPvP7ayje3sYCe72M0e9rKP/RwYTbVvOO9uMpKVzGSnI13pTHc2ZEs2Ddu6q2uBe9znAZMfe/+xmBlmmWMJS1k2mmrfcN7dZCQrmclOR4uGLHRnQ7a0MG7roK5DHOYIRznGcU5wklOc5gxnOcd7vM8f+RMf8CF/5i+jPOe7/JYzOZs7uZuMZCUz2elIVzrTnQ3Z0vKfeP+xgpWsYjVrWMs61rOBjWxiMz/j5/yCX/Irfs1v+O0oz/kuv+VMzuZO7iYjWclMdjrSlc50Z0O2dEHWPBe5xGWucJVrXOcGN7nFbe7wV/7G3/kH/+Rf/Jv/jPKc7/JbzuRs7uRuMpKVzGSnI13pTHc2ZEv/BVroGa0=",
+      "encoding": "base64",
+      "height": 23,
+      "id": 8,
+      "locked": true,
+      "name": "Tile Layer 3",
+      "offsetx": -32,
+      "offsety": -2,
+      "opacity": 1,
+      "type": "tilelayer",
+      "visible": false,
+      "width": 40,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "draworder": "topdown",
+      "id": 3,
+      "name": "click_rects",
+      "objects": [
+        {
+          "height": 477.56361778232,
+          "id": 3,
+          "name": "start",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 375.815533980583,
+          "x": 449.994890137966,
+          "y": 160.801226366888
+        }
+      ],
+      "opacity": 1,
+      "type": "objectgroup",
+      "visible": true,
+      "x": 0,
+      "y": 0
+    }
+  ],
+  "nextlayerid": 12,
+  "nextobjectid": 9,
+  "orientation": "orthogonal",
+  "properties": [
+    {
+      "name": "GameConfig",
+      "type": "string",
+      "value": "D:/code/SiegePerilous/config.json"
+    }
+  ],
+  "renderorder": "right-down",
+  "tiledversion": "1.11.2",
+  "tileheight": 32,
+  "tilesets": [
+    {
+      "firstgid": 1,
+      "source": "tileSets/main_menu_tileset.json"
+    },
+    {
+      "firstgid": 49,
+      "source": "tileSets/env_1_1.json"
+    }
+  ],
+  "tilewidth": 32,
+  "type": "map",
+  "version": "1.11",
+  "width": 40
+}
