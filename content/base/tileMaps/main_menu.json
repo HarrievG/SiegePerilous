@@ -4,78 +4,386 @@
   "infinite": false,
   "layers": [
     {
-      "compression": "zlib",
-      "data": "eJztzgENAAAIA6BHsX9KY3xTSEACAAB8N+0AJyxXYAAh",
-      "encoding": "base64",
-      "height": 23,
-      "id": 6,
-      "name": "Tile Layer 1",
-      "opacity": 1,
-      "type": "tilelayer",
-      "visible": true,
-      "width": 40,
-      "x": 0,
-      "y": 0
-    },
-    {
-      "compression": "zlib",
-      "data": "eJzt1MeSlGUYBeAWJGzVIc0MQUDAnFgp4VNAuABXSgbFC2CFhENGQDCtwET2Alhh+gARLoAVOYMoYGAlyQf/K2itcuVUPVVTPf2ec6r/qW61/v/5Nz/HHmq1jnOCk5ziNGc4yznOc4GLXOIyV/iJq/zML1zjOjf4ld/4nT+42dzEbWREVmRGdnREV3RGd2yILbEpix5utd5lMUtYyjLCclawklWsZg1rWcd7rGcDG3mfTWzmAz7kIz7mk+YmbiMjsiIzsqMjuqIzumNDbIlN6Xyk1eqim8EMYSjDeJThjGAkjzGK0YzhcZ7gSZ7iaZ7hWZ7jeV7gRcY2N3EbGZEVmZEdHdEVndEdG2JLbMo+d1/zDd/yHd9T2c8BDvIDh/iRwxx5pL3/o6PNTdxGRmRFZmRHR3RFZ3THhtgSm/JGR6v1JtOZwUxmMZs5zGUe83mLt1nAOx3t7VvY3MRtZERWZEZ2dERXdEZ3bIgtsSl/urvFbe5wl3v3u/u1Wg/Qg548SC9604e+/drb19HcxG1kRFZkRnZ0RFd0RndsiC2xKVvcbeVTPuNzvuBLtrGdHexkF7vZw1dt7tvb3MRtZERWZEZ2dERXdEZ3bIgtsSkv9W+1XmYc45nARAqv8CqTmMwUXmMq0/q3t+/15iZuIyOyIjOyoyO6ojO6Y0NsiU055u44JzjJKU5zhrOc4zwXuMglLnOlzX03m5u4jYzIiszIjo7ois7ojg2xJTZl0QDffyxmCUtZRljOClayitWsYS3rBrS375PmJm4jI7IiM7KjI7qiM7pjQ2yJTekc6PuPbgYzhKEM41GGM4KRPMYoRjNmYHv7xjY3cRsZkRWZkR0d0RWd0R0bYktsyj53X/MN3/Id31PZzwEO8gOH+JHDHGlz39HmJm4jI7IiM7KjI7qiM7pjQ2yJTXljkO8/pjODmcxiNnOYyzzm8xZvs4B3BrW3b2FzE7eREVmRGdnREV3RGd2xIbbEpvzp7ha3ucNd7t3v7vT9Rw968iC96E0f+na2t6+juYnbyIisyIzs6Iiu6Izu2BBbYlO2uNvKp3zG53zBl2xjOzvYyS52s4ev2ty3t7mJ28iIrMiM7OiIruiM7tgQW2JTXury/cc4xjOBiRRe4VUmMZkpvMZUpnW1t+/15iZuIyOyIjOyoyO6ojO6Y0NsiU055u44JzjJKU5zhrOc4zwXuMglLnPlH+xzE7eREVmRGdnREV3RGd2xIbbEpizq9v3HYpawlGWE5axgJatYzRrWsq67vX03u/6+idvIiKzIjOzoiK7ojO7YEFti0/19xb7i9+K14m/Fe4r3FjfFbZFRZBWZRXbRUXSV91jPBjbyPpvY3PxevVb9rXpP9d7qprqtMqqsKrPKrjqqrqqz6q42VFuqTdXzLZ5v8VkWn2nx2RafcfFZF5958dkXz6B4FsUzKZ5N8YyKZ1V+4io/8wvXuM6N5vfqtepv1Xuq91Y31W2VUWVVmVV21VF1VZ1Vd7Wh2lJtqu09pf/+5y8PTSnp",
-      "encoding": "base64",
-      "height": 23,
-      "id": 7,
-      "name": "Tile Layer 2",
-      "offsetx": -32,
-      "offsety": -2,
-      "opacity": 1,
-      "type": "tilelayer",
-      "visible": true,
-      "width": 40,
-      "x": 0,
-      "y": 0
-    },
-    {
-      "compression": "zlib",
-      "data": "eJzt1FeSVdcBheEL3Q1ITgNQzpoDJkdnv2Ny9BhkSb+y5kDOSLZkvwvlOAeaHJ39TgP+Th1P4JZe3VVf3VP37r3Weug6k8n//77P35aZyeR3bGUb29nBTnaxmz3sZR8H+P3MJJ/tZ9pnGclKZrLTka50pjsbsiWbsq27+ha4x30eMJmdTBaxmBlmmWMJy3hodpLPljLts4xkJTPZ6UhXOtOdDdnSwritg/oOcZgjHOUYxznBSU5xmjOc4z1ZPjvLtM8ykpXMZKcjXelMdzZkSzYN21o+N5n8lBWsZBWrWcNa1rGeDWxk09ykzf8zzf/RcH64KyNZyUx2OtKVznRnQ7Zk07CtCzrnucglLnOFq1zjOje4yS1uc2c01b7hvLvJSFYyk52OdKUz3dmQLc2P23ppyWTyB17mFV4lXuN13uBN3uJt3uHd0VT7hvPuJiNZyUx2OtKVznRnQ7Zk07CtR5ZOJo/yGI/zBE/yFE/zDM/yHM/zAi+Opto3nHc3GclKZrLTka50pjsbsiWbhm19pOs8H/MJn/IZn/MFX/IVX/MN3/LdaKp9w3l3k5GsZCY7HelKZ7qzIVs6P25ryzLvP7ayje3sYCe72M0e9rKP/RwYTbVvOO9uMpKVzGSnI13pTHc2ZEs2Ddu6q2uBe9znAZOHvP9YzAyzzLGEpSwbTbVvOO9uMpKVzGSno0VDFrqzIVtaGLd1UNchDnOEoxzjOCc4ySlOc4aznBtNtW84724ykpXMZKcjXelMdzZkSzYN21r+sPcfK1jJKlazhrWsYz0b2MgmNo+m2jecdzcZyUpmstORrnSmOxuyJZuGbV3QNc9FLnGZK1zlGte5wU1ucZs7o6n2DefdTUaykpnsdKQrnenOhmxpftzWSz/w/uNlXuFV4jVe5w3e5C3e5h3eHU21bzjvbjKSlcxkpyNd6Ux3NmRLNg3beuSH3n88xuM8wZM8xdM8w7M8x/O8wIujqfYN591NRrKSmex0pCud6c6GbMmmYVsf6TrPx3zCp3zG53zBl3zF13zDt3w3mmrfcN7dZCQrmclOR7rSme5syJbOj9va8iPvP7ayje3sYCe72M0e9rKP/RwYTbVvOO9uMpKVzGSnI13pTHc2ZEs2Ddu6q2uBe9znAZMfe/+xmBlmmWMJS1k2mmrfcN7dZCQrmclOR4uGLHRnQ7a0MG7roK5DHOYIRznGcU5wklOc5gxnOcd7vM8f+RMf8CF/5i+jPOe7/JYzOZs7uZuMZCUz2elIVzrTnQ3Z0vKfeP+xgpWsYjVrWMs61rOBjWxiMz/j5/yCX/Irfs1v+O0oz/kuv+VMzuZO7iYjWclMdjrSlc50Z0O2dEHWPBe5xGWucJVrXOcGN7nFbe7wV/7G3/kH/+Rf/Jv/jPKc7/JbzuRs7uRuMpKVzGSnI13pTHc2ZEv/BVroGa0=",
-      "encoding": "base64",
-      "height": 23,
-      "id": 8,
+      "id": 17,
+      "layers": [
+        {
+          "compression": "zlib",
+          "data": "eJztzgENAAAIA6BHsX9KY3xTSEACAAB8N+0AJyxXYAAh",
+          "encoding": "base64",
+          "height": 23,
+          "id": 23,
+          "locked": true,
+          "name": "Tile Layer 1",
+          "opacity": 1,
+          "type": "tilelayer",
+          "visible": true,
+          "width": 40,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "color": "#ffff00",
+          "draworder": "topdown",
+          "id": 18,
+          "name": "collision",
+          "objects": [
+            {
+              "height": 0,
+              "id": 13,
+              "name": "",
+              "polygon": [
+                {
+                  "x": 766.54545454545,
+                  "y": -162.916666666667
+                },
+                {
+                  "x": 784.567304664467,
+                  "y": -129.668869773609
+                },
+                {
+                  "x": 799.759805738661,
+                  "y": -101.640826777103
+                },
+                {
+                  "x": 870.166666666667,
+                  "y": 28.25
+                },
+                {
+                  "x": 431.443741045511,
+                  "y": 30.7528496759559
+                },
+                {
+                  "x": 528.208262540815,
+                  "y": -86.4150729627049
+                },
+                {
+                  "x": 561.893988106795,
+                  "y": -127.203643258414
+                },
+                {
+                  "x": 587.507689892819,
+                  "y": -158.218153359621
+                }
+              ],
+              "rotation": 0,
+              "type": "",
+              "visible": true,
+              "width": 0,
+              "x": -32,
+              "y": 701
+            }
+          ],
+          "opacity": 1,
+          "type": "objectgroup",
+          "visible": false,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "color": "#00ff00",
+          "draworder": "topdown",
+          "id": 20,
+          "locked": true,
+          "name": "trigger",
+          "objects": [
+            {
+              "height": 0,
+              "id": 14,
+              "name": "",
+              "polygon": [
+                {
+                  "x": 766.675434782609,
+                  "y": -162.844536231884
+                },
+                {
+                  "x": 778.798884057971,
+                  "y": -140.321173913043
+                },
+                {
+                  "x": 572.075818181818,
+                  "y": -139.264606060606
+                },
+                {
+                  "x": 587.568606060606,
+                  "y": -158.278606060606
+                }
+              ],
+              "rotation": 0,
+              "type": "",
+              "visible": true,
+              "width": 0,
+              "x": -32,
+              "y": 701
+            },
+            {
+              "height": 0,
+              "id": 17,
+              "name": "",
+              "polygon": [
+                {
+                  "x": 834.925,
+                  "y": -160.845
+                },
+                {
+                  "x": 855.549,
+                  "y": -121.321
+                },
+                {
+                  "x": 546.826,
+                  "y": -122.765
+                },
+                {
+                  "x": 578.569,
+                  "y": -161.279
+                }
+              ],
+              "rotation": 0,
+              "type": "",
+              "visible": true,
+              "width": 0,
+              "x": -68.6666666666667,
+              "y": 760.181818181818
+            }
+          ],
+          "opacity": 1,
+          "type": "objectgroup",
+          "visible": false,
+          "x": 0,
+          "y": 0
+        }
+      ],
       "locked": true,
-      "name": "Tile Layer 3",
-      "offsetx": -32,
-      "offsety": -2,
+      "name": "Door",
       "opacity": 1,
-      "type": "tilelayer",
-      "visible": false,
-      "width": 40,
+      "type": "group",
+      "visible": true,
       "x": 0,
       "y": 0
     },
     {
+      "id": 15,
+      "layers": [
+        {
+          "compression": "zlib",
+          "data": "eJzt1FeSVdcBheEL3Q1ITgNQzpoDJkdnv2Ny9BhkSb+y5kDOSLZkvwvlOAeaHJ39TgP+Th1P4JZe3VVf3VP37r3Weug6k8n//77P35aZyeR3bGUb29nBTnaxmz3sZR8H+P3MJJ/tZ9pnGclKZrLTka50pjsbsiWbsq27+ha4x30eMJmdTBaxmBlmmWMJy3hodpLPljLts4xkJTPZ6UhXOtOdDdnSwritg/oOcZgjHOUYxznBSU5xmjOc4z1ZPjvLtM8ykpXMZKcjXelMdzZkSzYN21o+N5n8lBWsZBWrWcNa1rGeDWxk09ykzf8zzf/RcH64KyNZyUx2OtKVznRnQ7Zk07CtCzrnucglLnOFq1zjOje4yS1uc2c01b7hvLvJSFYyk52OdKUz3dmQLc2P23ppyWTyB17mFV4lXuN13uBN3uJt3uHd0VT7hvPuJiNZyUx2OtKVznRnQ7Zk07CtR5ZOJo/yGI/zBE/yFE/zDM/yHM/zAi+Opto3nHc3GclKZrLTka50pjsbsiWbhm19pOs8H/MJn/IZn/MFX/IVX/MN3/LdaKp9w3l3k5GsZCY7HelKZ7qzIVs6P25ryzLvP7ayje3sYCe72M0e9rKP/RwYTbVvOO9uMpKVzGSnI13pTHc2ZEs2Ddu6q2uBe9znAZOHvP9YzAyzzLGEpSwbTbVvOO9uMpKVzGSno0VDFrqzIVtaGLd1UNchDnOEoxzjOCc4ySlOc4aznBtNtW84724ykpXMZKcjXelMdzZkSzYN21r+sPcfK1jJKlazhrWsYz0b2MgmNo+m2jecdzcZyUpmstORrnSmOxuyJZuGbV3QNc9FLnGZK1zlGte5wU1ucZs7o6n2DefdTUaykpnsdKQrnenOhmxpftzWSz/w/uNlXuFV4jVe5w3e5C3e5h3eHU21bzjvbjKSlcxkpyNd6Ux3NmRLNg3beuSH3n88xuM8wZM8xdM8w7M8x/O8wIujqfYN591NRrKSmex0pCud6c6GbMmmYVsf6TrPx3zCp3zG53zBl3zF13zDt3w3mmrfcN7dZCQrmclOR7rSme5syJbOj9va8iPvP7ayje3sYCe72M0e9rKP/RwYTbVvOO9uMpKVzGSnI13pTHc2ZEs2Ddu6q2uBe9znAZMfe/+xmBlmmWMJS1k2mmrfcN7dZCQrmclOR4uGLHRnQ7a0MG7roK5DHOYIRznGcU5wklOc5gxnOcd7vM8f+RMf8CF/5i+jPOe7/JYzOZs7uZuMZCUz2elIVzrTnQ3Z0vKfeP+xgpWsYjVrWMs61rOBjWxiMz/j5/yCX/Irfs1v+O0oz/kuv+VMzuZO7iYjWclMdjrSlc50Z0O2dEHWPBe5xGWucJVrXOcGN7nFbe7wV/7G3/kH/+Rf/Jv/jPKc7/JbzuRs7uRuMpKVzGSnI13pTHc2ZEv/BVroGa0=",
+          "encoding": "base64",
+          "height": 23,
+          "id": 8,
+          "locked": true,
+          "name": "Tile Layer 3",
+          "offsetx": -32,
+          "offsety": -2,
+          "opacity": 1,
+          "type": "tilelayer",
+          "visible": true,
+          "width": 40,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "color": "#ffff00",
+          "draworder": "topdown",
+          "id": 14,
+          "name": "collision",
+          "objects": [
+            {
+              "height": 0,
+              "id": 10,
+              "name": "",
+              "polygon": [
+                {
+                  "x": 479,
+                  "y": -62.6363636363636
+                },
+                {
+                  "x": 833,
+                  "y": -62.2727272727274
+                },
+                {
+                  "x": 835.346745221972,
+                  "y": -135.434239291976
+                },
+                {
+                  "x": 1093.742102619,
+                  "y": -133.272866946322
+                },
+                {
+                  "x": 1127,
+                  "y": -96.25
+                },
+                {
+                  "x": 1147.625,
+                  "y": -128.458333333333
+                },
+                {
+                  "x": 1235.69696969697,
+                  "y": -128.909090909091
+                },
+                {
+                  "x": 1277.21212121212,
+                  "y": -92.25
+                },
+                {
+                  "x": 1279.5,
+                  "y": 32.25
+                },
+                {
+                  "x": 0.777074378844759,
+                  "y": 32.0861830092892
+                },
+                {
+                  "x": -1.15897677384754,
+                  "y": -45.5514866929544
+                },
+                {
+                  "x": 52.3367426785515,
+                  "y": -99.1413784697734
+                },
+                {
+                  "x": 133.122577768126,
+                  "y": -97.9334138854396
+                },
+                {
+                  "x": 148.031928022559,
+                  "y": -99.6765500166775
+                },
+                {
+                  "x": 180.474923698526,
+                  "y": -132.622127540173
+                },
+                {
+                  "x": 486.037119932716,
+                  "y": -133.234696046531
+                }
+              ],
+              "rotation": 0,
+              "type": "",
+              "visible": true,
+              "width": 0,
+              "x": -32,
+              "y": 701
+            }
+          ],
+          "opacity": 1,
+          "type": "objectgroup",
+          "visible": true,
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "name": "BG2",
+      "opacity": 1,
+      "type": "group",
+      "visible": true,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": 13,
+      "layers": [
+        {
+          "compression": "zlib",
+          "data": "eJzt1UXT3YUZxuFDvAIUIoQE97qxapEQr1tWFPcPwIoiP+K4ZYXGE6obVrjDB2CFxhPcskJ7pafZsDvTbd+Za+bMOf/nvu83kznvYPD/n//l5+VDBoNXeJXXeJ032MJWtrGdHexkF7vZw5u8xdu8w7u8x/t8wId8xMfsHd7kNhnJSmay05GudKY7G7Ilm7rq0MHgL1zNNVzLdcT1LGYJS1nGclawkhu4kZu4mVu4ldu4nTu4k7tYNbzJbTKSlcxkpyNd6Ux3NmRLNjVj8mAwkyM4kqM4mmM4luM4nhM4kZM4mVP4Nt/hu3yP7/MDfsiP+DE/4aecOrzJbTKSlcxkpyNd6Ux3NmRLNvWwu0d4lMd4nCd4kqd4mmd4lud4nhd4cfJo/49eGt7kNhnJSmay05GudKY7G7Ilmzp7ymDwZ87hXM7jfC7gQi7iYi7hUi7jcq6YMtq+K4c3uU1GspKZ7HSkK53pzoZsyaY+cfcpn/E5X/Dlvu6pg8EBjGEs4xjPBCYyaepo+6YMb3KbjGQlM9npSFc6050N2ZJN3e3uHu7lPu7nAVazhrWsYz0b2MgmNo+476HhTW6TkaxkJjsd6UpnurMhW7Kpn00bDH7OaZzOGZzJLM5iNnOYyzzms4CF00bbt2h4k9tkJCuZyU5HutKZ7mzIlmzqZXev8Cqv8TpvsIWtbGM7O9jJLnazZ8R9e4c3uU1GspKZ7HSkK53pzoZsyaauOsz3H1dzDddyHXE9i1nCUpaxnBWsPGy0fauGN7lNRrKSmex0pCud6c6GbMmmZkz3/ccRHMlRHM0xHMtxHM8JnMhJnMwp00fbd+rwJrfJSFYyk52OdKUz3dmQLdnUw+4e4VEe43Ge4Eme4mme4Vme43le4MUR9700vMltMpKVzGSnI13pTHc2ZEs2dfbhvv84h3M5j/O5gAu5iIu5hEu5jMu54vDR9l05vMltMpKVzGSnI13pTHc2ZEs29Ym7T/mMz/mCL/d1z/D9xxjGMo7xTGAik2aMtm/K8Ca3yUhWMpOdjnSlM93ZkC3Z1N3u7uFe7uN+HmA1a1jLOtazgY1sYvOI+x4a3uQ2GclKZrLTka50pjsbsiWb+saBg8E3OZCDOJhvcQiHMpkpTGUahzGdhTNH27do5n9uWsB85jGXOczmLGZxJmdwOqcx0HUAYxjLOMYzgYlM4mt8na/+LqPuc5PbZOz7d0lmstORrnSmOxuyJZtarWcNa1nHejawkU1s5kH+yt/4O//gn0N53b/++97+2/33+z//6vMykpXMZKcjXbnJbXKyJZuadZC/Y8xmDnOZx3wWsJBf8Et+xa/5Db/ld/yeP/BH/sSiobzOe/ksz+TZ3OQ2GclKZrLTka50pjsbsiWb2iJvK9vYzg52sovd7OFN3uJt3uFd3uN9PuBDPuJj9g7ldd7LZ3kmz+Ymt8lIVjKTnY50pTPd2ZAt2VQH+zvGYpawlGUsZwUruYEbuYmbuYVbuY3buYM7uYtVQ3md9/JZnsmzucltMpKVzGSnI13pTHc2ZEs29W89Lxtm",
+          "encoding": "base64",
+          "height": 23,
+          "id": 24,
+          "locked": true,
+          "name": "Tile Layer 2",
+          "offsetx": -32,
+          "offsety": 2,
+          "opacity": 1,
+          "type": "tilelayer",
+          "visible": true,
+          "width": 40,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "color": "#ffff00",
+          "draworder": "topdown",
+          "id": 12,
+          "name": "collision",
+          "objects": [
+            {
+              "height": 0,
+              "id": 9,
+              "name": "",
+              "polygon": [
+                {
+                  "x": -0.126254026005364,
+                  "y": 37.6057833154541
+                },
+                {
+                  "x": 2.21982464143709,
+                  "y": -63.561984630073
+                },
+                {
+                  "x": 17.6908671590547,
+                  "y": -91.2003313160354
+                },
+                {
+                  "x": 905.356142845739,
+                  "y": -96.350140180886
+                },
+                {
+                  "x": 1292.38212074582,
+                  "y": -95.3062600055784
+                },
+                {
+                  "x": 1292.85455310878,
+                  "y": 37.8884646170939
+                }
+              ],
+              "rotation": 0,
+              "type": "",
+              "visible": true,
+              "width": 0,
+              "x": -38.4200523191685,
+              "y": 697.441049271795
+            }
+          ],
+          "opacity": 1,
+          "type": "objectgroup",
+          "visible": true,
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "name": "BG1",
+      "opacity": 1,
+      "type": "group",
+      "visible": false,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "color": "#0100ffff",
       "draworder": "topdown",
       "id": 3,
+      "locked": true,
       "name": "click_rects",
       "objects": [
         {
-          "height": 477.56361778232,
+          "height": 475.56361778232,
           "id": 3,
           "name": "start",
           "rotation": 0,
           "type": "",
           "visible": true,
-          "width": 375.815533980583,
+          "width": 348.48220064725,
           "x": 449.994890137966,
           "y": 160.801226366888
         }
       ],
       "opacity": 1,
       "type": "objectgroup",
-      "visible": true,
+      "visible": false,
       "x": 0,
       "y": 0
     }
   ],
-  "nextlayerid": 12,
-  "nextobjectid": 9,
+  "nextlayerid": 29,
+  "nextobjectid": 21,
   "orientation": "orthogonal",
   "properties": [
     {

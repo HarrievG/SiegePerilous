@@ -197,7 +197,8 @@ void SiegePerilous::WorldState::Update( ) {
 void SiegePerilous::WorldState::Draw( ) {
 	if ( m_map ) {
 		SDL_Renderer *renderer = m_camera.GetRenderer( );
-		for ( const auto &layer : m_map->layers ) {
+		for ( auto &layerRefPtr : m_map->GetLayersOfType( "tilelayer", true, true ) ) {
+			Tiled::Layer &layer = *layerRefPtr;
 			if ( layer.type == "tilelayer" && layer.visible && layer.width.has_value( ) && layer.height.has_value( ) ) {
 				for ( int y = 0; y < *layer.height; ++y ) {
 					for ( int x = 0; x < *layer.width; ++x ) {

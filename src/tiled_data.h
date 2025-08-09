@@ -453,6 +453,9 @@ namespace Tiled {
 				"width", &T::width
 			);
 		};
+
+		std::vector<Layer *> GetAllLayersOfType( const std::string &type, bool resolveGroup );
+		std::vector<Layer *> GetLayersOfType( const std::string &type, const bool visible, const bool resolveGroup );
 	};
 	
 	// Loads a Tiled map and recursively resolves its external tilesets.

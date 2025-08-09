@@ -54,7 +54,6 @@ namespace Tiled {
 		// --- 1. Load the main map file ---
 		size_t map_file_size = 0;		
 		auto map_buffer_data = fileSystem->ReadFile( map_path );
-		
 		Tiled::Map map;
 		if (auto& buffer = map_buffer_data) {
 			// --- 2. Parse the main map buffer into our Tiled::Map struct ---
@@ -100,8 +99,9 @@ namespace Tiled {
 		}
 
 		// --- 4. Decode layer data ---
-		for ( auto &layer : map.layers ) {
-			if ( layer.type == "tilelayer" && layer.data.has_value( ) ) {
+		for ( auto &layerRefPtr : map.GetAllLayersOfType( "tilelayer" ,true) ) {
+			Tiled::Layer &layer = *layerRefPtr;
+			if ( layer.data.has_value( ) ) {
 				//if the variant is a string, its Base64 encoded data?
 				//when it are numbers it is already decoded?
 				if ( std::holds_alternative<std::string>( layer.data.value( ) ) ) {
@@ -149,4 +149,75 @@ namespace Tiled {
 
 		return map;
 	}
+
+	namespace { // Use an anonymous namespace to keep the helper function private to this file.
+
+		// Recursively searches through a vector of layers to find all layers of a specific type.
+		void findLayersRecursive(
+			std::vector<Layer> &layersToSearch,      // The current list of layers to iterate through.
+			const std::string &type,                  // The layer type we are looking for.
+			bool isParentVisible,                     // The visibility status of the parent group.
+			const bool targetVisibility,              // The desired visibility state (true for visible, false for hidden).
+			const bool shouldResolveGroups,           // Whether to search inside group layers.
+			std::vector<Layer *> &result )              // The vector to store pointers to found layers.
+		{
+			for ( auto &layer : layersToSearch ) {
+				// A layer is effectively visible only if its own 'visible' flag is true AND its parent is visible.
+				const bool currentLayerIsEffectivelyVisible = isParentVisible && layer.visible;
+
+				// If the layer's type matches what we're looking for...
+				if ( layer.type == type ) {
+					// ...and its effective visibility matches the target visibility, add it to the results.
+					if ( currentLayerIsEffectivelyVisible == targetVisibility ) {
+						result.push_back( &layer );
+					}
+				}
+
+				// If we are supposed to resolve groups, this layer is a group, and it has sub-layers, then recurse.
+				if ( shouldResolveGroups && layer.type == "group" && layer.layers.has_value( ) ) {
+					// The 'isParentVisible' for the next level of recursion is this layer's effective visibility.
+					findLayersRecursive(
+						*layer.layers,
+						type,
+						currentLayerIsEffectivelyVisible,
+						targetVisibility,
+						shouldResolveGroups,
+						result
+					);
+				}
+			}
+		}
+	}
+
+	// Returns all layers of a given type, taking into account visibility and group hierarchy.
+	// This is implemented as a member function of Tiled::Map.
+	std::vector<Layer *> Map::GetLayersOfType( const std::string &type, const bool visible, const bool resolveGroup ) {
+		std::vector<Layer *> foundLayers;
+
+		// Start the recursive search from the map's top-level layers.
+		// The initial "parent" (the map itself) is considered visible, so we pass 'true'.
+		findLayersRecursive( this->layers, type, true, visible, resolveGroup, foundLayers );
+
+		return foundLayers;
+	}
+
+	// Provides all layers of a specific type, ignoring their visibility.
+	// It merges the visible and invisible layers into a single vector.
+	std::vector<Layer *> Tiled::Map::GetAllLayersOfType( const std::string &type, bool resolveGroup ) {
+		// First, get all the visible layers of the specified type.
+		std::vector<Layer *> allLayers = GetLayersOfType( type, true, resolveGroup );
+
+		// Then, get all the invisible layers of the same type.
+		std::vector<Layer *> invisibleLayers = GetLayersOfType( type, false, resolveGroup );
+
+		// Append the invisible layers to the end of the vector containing the visible layers.
+		allLayers.insert( allLayers.end( ), invisibleLayers.begin( ), invisibleLayers.end( ) );
+
+		return allLayers;
+	}
+
+
+
+
+
 }
