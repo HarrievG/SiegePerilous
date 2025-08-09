@@ -11,6 +11,8 @@
 #include <map>
 #include "QuadTree.hpp"
 #include "FileSystem.h"
+#include "ShapeFactory.h"
+#include <memory>
 
 namespace SiegePerilous {
 
@@ -43,6 +45,7 @@ namespace SiegePerilous {
 
 		Camera &GetCamera( ) { return m_camera; }
 	private:
+		void CreatePhysicsBodiesFromMap();
 		bool m_isInitialized;
 		bool m_isRunning;
 		b2SDLDraw *m_debugDraw;
@@ -58,5 +61,6 @@ namespace SiegePerilous {
 		QuadTree::QuadTree<int> *m_quadTree;
 		FileSystem *m_fileSystem{};
 
+		std::unique_ptr<ShapeFactory> m_shapeFactory;
 	};
 }

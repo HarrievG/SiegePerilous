@@ -2,8 +2,10 @@
 #include "tiled_data.h"
 #include <SDL3_image/SDL_image.h>
 #include <iostream>
+#include "ShapeFactory.h"
+#include "ChainShapeCreator.h"
 
-SiegePerilous::WorldState::WorldState( ) : m_isInitialized( false ), m_isRunning( false ), m_debugDraw( nullptr ), m_camera( nullptr ) {
+SiegePerilous::WorldState::WorldState( ) : m_isInitialized( false ), m_isRunning( false ), m_debugDraw( nullptr ), m_camera( nullptr ), m_shapeFactory(std::make_unique<ShapeFactory>()) {
 	physicsState.worldId = B2_NULL_ID;
 	physicsState.groundId = B2_NULL_ID;
 	physicsState.bodyId = B2_NULL_ID;
@@ -70,7 +72,11 @@ bool SiegePerilous::WorldState::Initialise( ) {
 	currentTime = SDL_GetTicks( ) / 1000.0;
 	accumulator = 0.0;
 
+	m_shapeFactory->registerCreator("b2ChainShape", std::make_unique<ChainShapeCreator>());
+
 	m_map = Tiled::load_map_with_deps( "tileMaps/main_menu.json" );
+
+	CreatePhysicsBodiesFromMap();
 
 	std::filesystem::path relPath = fileSystem->RelativeToOSPath( "main_menu.json" );
 	std::string relPathStr = relPath.string();
@@ -341,4 +347,43 @@ void SiegePerilous::WorldState::Start( ) {
 
 void SiegePerilous::WorldState::Stop( ) {
 	m_isRunning = false;
+}
+
+void SiegePerilous::WorldState::CreatePhysicsBodiesFromMap()
+{
+    if (!m_map)
+    {
+        return;
+    }
+
+    for (auto& layer : m_map->GetLayersOfType("objectgroup", true, true))
+    {
+        bool isPhysicsLayer = false;
+        if (layer->properties)
+        {
+            for (const auto& prop : *layer->properties)
+            {
+                if (prop.name == "class" && prop.value == "physics")
+                {
+                    isPhysicsLayer = true;
+                    break;
+                }
+            }
+        }
+
+        if (isPhysicsLayer)
+        {
+            if (layer->objects)
+            {
+                for (const auto& object : *layer->objects)
+                {
+                    const PhysicsShapeCreator* creator = m_shapeFactory->create(object.type);
+                    if (creator)
+                    {
+                        creator->create(physicsState.worldId, object);
+                    }
+                }
+            }
+        }
+    }
 }
