@@ -181,6 +181,7 @@
           "y": 0
         },
         {
+          "class": "physics",
           "color": "#ffff00",
           "draworder": "topdown",
           "id": 14,
@@ -257,7 +258,7 @@
                 }
               ],
               "rotation": 0,
-              "type": "",
+              "type": "b2ChainShape",
               "visible": true,
               "width": 0,
               "x": -32,
