@@ -7,6 +7,7 @@ This is a C++ project that uses SDL3 and Box2D.
 The project has the following dependencies:
 
 *   [SDL3](https://github.com/libsdl-org/SDL)
+*   [SDL_IMAGE3](https://github.com/libsdl-org/SDL_image)
 *   [Box2D](https://github.com/erincatto/box2d)
 *   [Glaze](https://github.com/stephenberry/glaze)
 
