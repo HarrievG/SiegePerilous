@@ -75,7 +75,7 @@ namespace Tiled {
 		for ( auto &tileset : map.tilesets ) {
 			if ( tileset.source ) {
 				std::string tileset_path = *tileset.source;
-				std::cout << "--> Found external tileset source: '" << *tileset.source << "'. Loading from '" << fileSystem->RelativeToOSPath( tileset_path ) << "'" << std::endl;
+				std::cout << "> Found external tileset source: '" << *tileset.source << "'. Loading from '" << fileSystem->RelativeToOSPath( tileset_path ) << "'" << std::endl;
 
 				size_t tileset_file_size = 0;
 				
@@ -83,7 +83,7 @@ namespace Tiled {
 
 				if ( auto &buffer = tileset_buffer_data ) {
 					// --- Parse the buffer into our struct ---
-					std::cout << "Successfully loaded '" << tileset_path << "' (" << buffer->size( ) << " bytes)." << std::endl;
+					std::cout << "  Successfully loaded '" << tileset_path << "' (" << buffer->size( ) << " bytes)." << std::endl;
 					auto err = glz::read < glz::opts{ .error_on_unknown_keys = false } > ( tileset, *buffer );
 					if ( err ) {
 						std::cerr << "Error: Failed to parse map JSON from '" << map_path << "'." << std::endl;
@@ -94,7 +94,7 @@ namespace Tiled {
 					return std::nullopt;
 				}
 
-				std::cout << "    ... Successfully parsed and merged tileset '" << ( tileset.name ? *tileset.name : "N/A" ) << "'." << std::endl;
+				std::cout << "  Successfully parsed and merged tileset '" << ( tileset.name ? *tileset.name : "N/A" ) << "'." << std::endl;
 			}
 		}
 

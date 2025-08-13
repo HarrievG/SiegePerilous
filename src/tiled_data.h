@@ -392,7 +392,6 @@ namespace Tiled {
 		double time_accumulator_ms = 0.0;
 	};
 
-
 	struct Map {
 		std::optional<std::string> backgroundcolor{};
 		std::optional<std::string> class_property{};

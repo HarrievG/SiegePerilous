@@ -21,8 +21,8 @@ set(SDLIMAGE_WEBP OFF)
 
 FetchContent_Declare(SDL_image
    GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
-   GIT_TAG main
-  # GIT_TAG release-3.2.4
+   #GIT_TAG main
+   GIT_TAG "release-3.2.4"
    GIT_PROGRESS TRUE
    GIT_SHALLOW TRUE)
 

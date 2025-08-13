@@ -53,7 +53,10 @@ set (headers
 "src/SiegePerilous.h"
 "src/b2_sdl_draw.h"
 "src/World.h"
-"src/tiled_data.h")
+"src/tiled_data.h"
+"src/PhysicsShapeCreator.h"
+"src/ShapeFactory.h" 
+"src/Sprite.h")
 
 set (sources
 "src/main.cpp"
@@ -61,7 +64,11 @@ set (sources
 "src/tiled_data_loader.cpp"
 "src/World.cpp"
 "src/FileSystem.cpp"
+"src/ShapeFactory.cpp"
+"src/ChainShapeCreator.cpp"
+"src/gfx/cube_atlas.cpp"
 )
+
 
 add_executable(${PROJECT_NAME} ${sources} ${headers} "src/tiled_data.h")
 SDL_AddCommonCompilerFlags(${PROJECT_NAME})
@@ -74,6 +81,7 @@ target_link_libraries(${PROJECT_NAME}
 	PRIVATE box2d::box2d
 	PRIVATE zlib
 )
+
 target_include_directories(${PROJECT_NAME} PRIVATE
   ${glaze_SOURCE_DIR}/include/glaze
   ${SDL3_BINARY_DIR}/include-config-$<LOWER_CASE:$<CONFIG>>
