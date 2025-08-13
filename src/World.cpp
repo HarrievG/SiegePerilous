@@ -4,6 +4,7 @@
 #include <iostream>
 #include "ShapeFactory.h"
 #include "ChainShapeCreator.h"
+#include "aseprite_data.h"
 
 SiegePerilous::WorldState::WorldState( ) : m_isInitialized( false ), m_isRunning( false ), m_debugDraw( nullptr ), m_camera( nullptr ), m_shapeFactory(std::make_unique<ShapeFactory>()) {
 	physicsState.worldId = B2_NULL_ID;
@@ -49,12 +50,12 @@ bool SiegePerilous::WorldState::Initialise( ) {
 	worldDef.gravity = b2Vec2( { 0.0f, -10.f } );
 	physicsState.worldId = b2CreateWorld( &worldDef );
 
-	b2BodyDef groundBodyDef = b2DefaultBodyDef( );
-	groundBodyDef.position = b2Vec2( { 0.0f, 0.0f } );
-	physicsState.groundId = b2CreateBody( physicsState.worldId, &groundBodyDef );
-	b2Polygon groundBox = b2MakeOffsetBox( 25.0f, 1.0f, { 0.0f,0.0f }, b2MakeRot( degToRad( 10 ) ) );
-	b2ShapeDef groundShapeDef = b2DefaultShapeDef( );
-	b2CreatePolygonShape( physicsState.groundId, &groundShapeDef, &groundBox );
+	//b2BodyDef groundBodyDef = b2DefaultBodyDef( );
+	//groundBodyDef.position = b2Vec2( { 0.0f, 0.0f } );
+	//physicsState.groundId = b2CreateBody( physicsState.worldId, &groundBodyDef );
+	//b2Polygon groundBox = b2MakeOffsetBox( 25.0f, 1.0f, { 0.0f,0.0f }, b2MakeRot( degToRad( 10 ) ) );
+	//b2ShapeDef groundShapeDef = b2DefaultShapeDef( );
+	//b2CreatePolygonShape( physicsState.groundId, &groundShapeDef, &groundBox );
 
 	b2BodyDef bodyDef = b2DefaultBodyDef( );
 	bodyDef.type = b2_dynamicBody;
@@ -127,8 +128,59 @@ bool SiegePerilous::WorldState::Initialise( ) {
 					if ( tile.image ) {
 						// This specific tile has its own image file.
 						std::string image_path = *tile.image;
-						SDL_Surface *surface = IMG_Load( fileSystem->RelativeToOSPath( image_path ).string().c_str() );
-						if ( surface ) {
+
+						if ( fileSystem->RelativeToOSPath( image_path ).extension( ) == ".aseprite" 
+							||fileSystem->RelativeToOSPath( image_path ).extension( ) == ".ase" )
+						{
+
+							//move to sprite.h as LoadExternalTileSourceASE( const std::string &image_path )
+							auto spritePath = fs::path( image_path );
+							spritePath.replace_extension( "" ); // Aseprite files are usually exported to PNGs
+							spritePath = spritePath / "sprite.json";
+
+							std::cout << ">>   Found external tile source : Tile[" << tile.id << "] Loading from '" << fileSystem->RelativeToOSPath( spritePath ) << "'" << std::endl;
+
+							size_t map_file_size = 0;
+							auto sprite_buffer_data = fileSystem->ReadFile( spritePath );
+							ASE::aseprite_file_t sprite;
+							if ( auto &buffer = sprite_buffer_data ) {
+								auto err = glz::read < glz::opts{ .error_on_unknown_keys = false } > ( sprite, *buffer );
+								if ( err ) {
+									std::cerr << "Error: Failed to sprite JSON from '" << spritePath << "'." << std::endl;
+									continue;
+								}
+								std::cout << "     Successfully loaded and parsed '" << spritePath << "' (" << buffer->size( ) << " bytes)." << std::endl;
+							}
+							for (auto & layer : sprite.layers)
+							{
+								int cellIdx = 1;
+								for ( auto &cell : layer.cells ) {
+									
+									if (cell.data)
+									{
+										std::string &data_string = *cell.data;
+										ASE::cell_user_data_physics_t celldata;
+
+										auto error = glz::read_json( celldata, data_string );
+										if ( error ) {
+											std::cerr << "     Error parsing intermediate physics data in cell ["<< cellIdx <<"] : "
+												<< glz::format_error( error, data_string ) << std::endl;
+											cellIdx ++;
+											continue;
+										}
+
+										if ( celldata.polygonCollisionShape ) {
+											std::cout << "     polygonCollisionShape with [" << celldata.polygonCollisionShape.value().size() << "] points found for  '" << spritePath << " in cell " << cellIdx << std::endl;
+											//process polyshape with a factory entry.
+										}
+									}
+
+									cellIdx ++;
+								}
+							}
+						}
+
+						else if ( SDL_Surface *surface = IMG_Load( fileSystem->RelativeToOSPath( image_path ).string( ).c_str( ) ) ) {
 							SDL_Texture *texture = SDL_CreateTextureFromSurface( m_camera.GetRenderer( ), surface );
 							if ( texture ) {
 								// Calculate the Global ID (GID) for this tile
@@ -138,7 +190,7 @@ bool SiegePerilous::WorldState::Initialise( ) {
 							} else {
 								std::cerr << "Failed to create texture for tile from " << image_path << "! SDL_Error: " << SDL_GetError( ) << std::endl;
 							}
-							SDL_DestroySurface( surface );
+							SDL_DestroySurface( surface );							
 						} else {
 							std::cerr << "Failed to load individual tile image " << image_path << "! IMG_Error: " /*<< IMG_GetError( ) */<< std::endl;
 						}
@@ -356,34 +408,20 @@ void SiegePerilous::WorldState::CreatePhysicsBodiesFromMap()
         return;
     }
 
-    for (auto& layer : m_map->GetLayersOfType("objectgroup", true, true))
+    for (const auto &layer : m_map->GetLayersOfType("objectgroup", true, true))
     {
-        bool isPhysicsLayer = false;
-        if (layer->properties)
-        {
-            for (const auto& prop : *layer->properties)
-            {
-                if (prop.name == "class" && prop.value == "physics")
-                {
-                    isPhysicsLayer = true;
-                    break;
-                }
-            }
-        }
+		bool isPhysicsLayer = layer->class_property.value_or( ""  ) == "physics";
 
-        if (isPhysicsLayer)
-        {
-            if (layer->objects)
-            {
-                for (const auto& object : *layer->objects)
-                {
-                    const PhysicsShapeCreator* creator = m_shapeFactory->create(object.type);
-                    if (creator)
-                    {
-                        creator->create(physicsState.worldId, object);
-                    }
-                }
-            }
-        }
+		if ( isPhysicsLayer ) {
+			if ( layer->objects ) {
+				for ( const auto &object : *layer->objects ) {
+					const PhysicsShapeCreator *creator = m_shapeFactory->create( object.type );
+					if ( creator ) {
+						// Create the physics body using the creator
+						creator->create( physicsState.worldId, object,layer->offsetx,layer->offsety);
+					}
+				}
+			}
+		}
     }
 }
