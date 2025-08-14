@@ -5,6 +5,9 @@
 #include "ShapeFactory.h"
 #include "ChainShapeCreator.h"
 #include "aseprite_data.h"
+#include "ContentFactory.h"
+#include "ContentFactory.h"
+#include "Sprite.h"
 
 SiegePerilous::WorldState::WorldState( ) : m_isInitialized( false ), m_isRunning( false ), m_debugDraw( nullptr ), m_camera( nullptr ), m_shapeFactory(std::make_unique<ShapeFactory>()) {
 	physicsState.worldId = B2_NULL_ID;
@@ -45,6 +48,7 @@ bool SiegePerilous::WorldState::Initialise( ) {
 	if ( m_isInitialized ) {
 		return true; // Already initialized
 	}
+	Content::content_cache_item<SiegePerilous::AseSprite>( "sprites" );
 
 	b2WorldDef worldDef = b2DefaultWorldDef( );
 	worldDef.gravity = b2Vec2( { 0.0f, -10.f } );
@@ -134,12 +138,14 @@ bool SiegePerilous::WorldState::Initialise( ) {
 						if ( fileSystem->RelativeToOSPath( image_path ).extension( ) == ".aseprite" 
 							||fileSystem->RelativeToOSPath( image_path ).extension( ) == ".ase" )
 						{
-
+							
 							//move to sprite.h as LoadExternalTileSourceASE( const std::string &image_path )
 							auto spritePath = fs::path( image_path );
 							spritePath.replace_extension( "" ); // Aseprite files are usually exported to PNGs
 							spritePath = spritePath / "sprite.json";
 
+							auto spriteX = SiegePerilous::Content::Load<AseSprite>( spritePath );
+							auto spriteY = SiegePerilous::Content::Load<AseSprite>( spritePath );
 							std::cout << ">>   Found external tile source : Tile[" << tile.id << "] Loading from '" << fileSystem->RelativeToOSPath( spritePath ) << "'" << std::endl;
 
 							size_t map_file_size = 0;

@@ -108,6 +108,7 @@ public:
     // Returns the length of a file in bytes, or -1 if it doesn't exist.
     virtual long long GetFileLength(const fs::path& relativePath) = 0;
 
+	virtual bool Exists(const fs::path& relativePath) = 0;
 };
 
 extern FileSystem* fileSystem;

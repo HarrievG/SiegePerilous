@@ -57,7 +57,7 @@ set (headers
 "src/PhysicsShapeCreator.h"
 "src/ShapeFactory.h" 
 "src/Sprite.h"
-
+"src/ContentFactory.h"
 "src/include/Declarations.h"
 
 )
@@ -71,6 +71,8 @@ set (sources
 "src/ShapeFactory.cpp"
 "src/ChainShapeCreator.cpp"
 "src/gfx/cube_atlas.cpp"
+"src/ContentFactory.cpp"
+
 )
 
 

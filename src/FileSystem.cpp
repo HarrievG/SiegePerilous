@@ -64,6 +64,16 @@ public:
     bool FilenameCompare(const fs::path& p1, const fs::path& p2) const override;
     long long GetFileLength(const fs::path& relativePath) override;
 
+	bool Exists( const fs::path &relativePath ) override {
+		return FindFile( relativePath ).has_value( );
+	}
+
+	// For debugging purposes
+	void DebugPrintSearchPaths( ) const {
+		for ( const auto &sp : searchPaths ) {
+			std::cout << "Search Path: " << sp.path / sp.gamedir << std::endl;
+		}
+	}
 private:
     std::optional<fs::path> FindFile(const fs::path& relativePath) const;
     void AddGameDirectory(const fs::path& path, const fs::path& dir);
