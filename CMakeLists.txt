@@ -56,7 +56,11 @@ set (headers
 "src/tiled_data.h"
 "src/PhysicsShapeCreator.h"
 "src/ShapeFactory.h" 
-"src/Sprite.h")
+"src/Sprite.h"
+
+"src/include/Declarations.h"
+
+)
 
 set (sources
 "src/main.cpp"

@@ -74,6 +74,8 @@ bool SiegePerilous::WorldState::Initialise( ) {
 	accumulator = 0.0;
 
 	m_shapeFactory->registerCreator("b2ChainShape", std::make_unique<ChainShapeCreator>());
+	//this is stupid, an ase is an sprite!
+	//m_shapeFactory->registerCreator( "aseSprite", std::make_unique<AsepriteShapeCreator>( ) );
 
 	m_map = Tiled::load_map_with_deps( "tileMaps/main_menu.json" );
 

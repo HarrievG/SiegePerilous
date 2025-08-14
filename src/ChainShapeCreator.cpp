@@ -48,7 +48,7 @@ namespace SiegePerilous
     }
 
 
-	void AsepriteShapeCreator::create( b2WorldId worldId, const Tiled::Object &object, double offsetx /*= 0*/, double offsety /*= 0*/ ) const {
+void AsepriteShapeCreator::create( b2WorldId worldId, const Tiled::Object &object, double offsetx /*= 0*/, double offsety /*= 0*/ ) const {
 		b2BodyDef bodyDef = b2DefaultBodyDef( );
 		b2BodyId bodyId = b2CreateBody( worldId, &bodyDef );
 
@@ -80,5 +80,5 @@ namespace SiegePerilous
 
 		b2CreateChain( bodyId, &chainDef );
 	}
-
+	
 }

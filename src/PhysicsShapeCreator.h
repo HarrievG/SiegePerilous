@@ -16,8 +16,6 @@ namespace SiegePerilous
 							) const = 0;
     };
 
-
-
 	// PhysicsShapeCreator for ASE sprites
 	class AsepriteShapeCreator : public PhysicsShapeCreator {
 	public:
